@@ -1,0 +1,28 @@
+# docker-compose --log-level INFO up --build portable-mina-ftpserver
+# docker-compose --log-level INFO up
+
+version: '3'
+services:
+  portable-redis7:
+    image: terwer/ftpserver:latest
+    container_name: portable-ftpserver
+    build:
+     context: .
+     dockerfile: Dockerfile
+    ports:
+     - "21:21"
+     - "21000-21010:21000-21010"
+    environment:
+     - "TZ=Asia/Shanghai"
+     - "USERS=terwer|123456|/Users/terwer/ftppath|10000"
+     - "ADDRESS=localhost"
+    volumes:
+      - ./ftphome:/Users/terwer/ftppath
+    stdin_open: true
+    restart: "no"
+    networks:
+      - local-dev
+
+networks:
+  local-dev:
+    external: true
